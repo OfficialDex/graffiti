@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ config.description }}">
+    <meta name="theme-color" content="#3498db">
+    <title>{{ config.project_name }} - Discord Bot Dashboard</title>
+    <link rel="icon" href="{{ config.bot_logo }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Add basic animation keyframes for command list */
+        @keyframes commandSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="{{ theme }} loading" onload="document.body.classList.remove('loading'); document.body.classList.add('loaded');">
+    <!-- Corner Buttons -->
+    <div class="corner-buttons">
+        <div class="corner-button bottom-right">
+            <a href="{{ config.support_server_url }}" class="corner-btn support-btn" target="_blank">
+                <i class="fas fa-headset"></i>
+            </a>
+        </div>
+        <div class="corner-button bottom-left">
+            <a href="{{ config.topgg_vote_url }}" class="corner-btn vote-btn" target="_blank">
+                <i class="fas fa-heart"></i>
+            </a>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="header-branding">
+                <img src="{{ config.bot_logo }}" alt="Rabbit Logo" class="rabbit-logo">
+                <h1 class="animated-title">{{ config.project_name }}</h1>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h2><i class="fas fa-robot"></i> Welcome to {{ config.project_name }}</h2>
+                    <p class="hero-description">{{ config.description }}</p>
+                    <div class="hero-actions">
+                        <a href="{{ config.bot_invite_url }}" class="cta-btn primary" target="_blank">
+                            <i class="fas fa-plus"></i> Add to Server
+                        </a>
+                        <a href="{{ config.support_server_url }}" class="cta-btn secondary" target="_blank">
+                            <i class="fas fa-comments"></i> Get Help
+                        </a>
+                        <a href="{{ config.topgg_vote_url }}" class="cta-btn vote" target="_blank">
+                            <i class="fas fa-heart"></i> Vote on Top.gg
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bot-showcase-section">
+                <div class="showcase-logo-container">
+                    <img src="{{ config.bot_logo }}" alt="Bot Logo" class="showcase-bot-logo">
+                    <div class="showcase-rings">
+                        <div class="ring ring-1"></div>
+                        <div class="ring ring-2"></div>
+                        <div class="ring ring-3"></div>
+                    </div>
+                    <div class="showcase-particles">
+                        <div class="particle particle-1"></div>
+                        <div class="particle particle-2"></div>
+                        <div class="particle particle-3"></div>
+                        <div class="particle particle-4"></div>
+                        <div class="particle particle-5"></div>
+                        <div class="particle particle-6"></div>
+                    </div>
+                </div>
+                <div class="showcase-text">
+                    <h3>Powered by Advanced AI</h3>
+                    <p>Experience the next generation of Discord automation</p>
+                </div>
+            </section>
+
+            <section class="features-section">
+                <h2><i class="fas fa-star"></i> Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Moderation</h3>
+                        <p>Comprehensive moderation tools to keep your server safe</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-robot"></i>
+                        <h3>AutoMod</h3>
+                        <p>Automatic moderation to prevent spam and toxicity</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-ticket-alt"></i>
+                        <h3>Tickets</h3>
+                        <p>Support ticket system for member assistance</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-brain"></i>
+                        <h3>AI Integration</h3>
+                        <p>Image generation and AI chat capabilities</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-gift"></i>
+                        <h3>Giveaways</h3>
+                        <p>Easy to use giveaway system for your community</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-cogs"></i>
+                        <h3>Utilities</h3>
+                        <p>Various utility commands to enhance your server</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="commands-section">
+                <h2><i class="fas fa-terminal"></i> Prefix Commands</h2>
+                <div class="commands-accordion">
+                    {% for category, commands in config.prefix_commands.items() %}
+                    <div class="command-category">
+                        <div class="category-header">
+                            <h3>{{ category }}</h3>
+                            <span class="toggle-icon">+</span>
+                        </div>
+                        <div class="category-commands">
+                            <ul>
+                                {% for command in commands %}
+                                <li>{{ command }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="commands-section">
+                <h2><i class="fas fa-slash"></i> Slash Commands</h2>
+                <div class="commands-accordion">
+                    {% for category, commands in config.slash_commands.items() %}
+                    <div class="command-category">
+                        <div class="category-header">
+                            <h3>{{ category }}</h3>
+                            <span class="toggle-icon">+</span>
+                        </div>
+                        <div class="category-commands">
+                            <ul>
+                                {% for command in commands %}
+                                <li>{{ command }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="contact-section">
+                <h2><i class="fas fa-envelope"></i> Contact Us</h2>
+                <div class="contact-form-container">
+                    <form id="contactForm" action="/submit-contact" method="post">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <select id="subject" name="subject">
+                                <option value="support">Support Request</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="bug">Bug Report</option>
+                                <option value="feature">Feature Request</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="contact-submit-btn">Send Message</button>
+                    </form>
+                    <div id="formSuccess" class="form-success">
+                        <i class="fas fa-check-circle"></i>
+                        <p>Your message has been sent successfully!</p>
+                    </div>
+                    <div id="formError" class="form-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Something went wrong. Please try again later.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <section class="owner-section">
+        <h2><i class="fas fa-crown"></i> Bot Owner</h2>
+        <div class="owner-card">
+            <div class="owner-avatar">
+                <img src="{{ config.owner.avatar }}" alt="Owner Avatar">
+            </div>
+            <div class="owner-info">
+                <h3>{{ config.owner.display_name }}</h3>
+                <p class="owner-username">@{{ config.owner.username }}</p>
+                <p class="owner-id">ID: {{ config.owner.user_id }}</p>
+                <div class="owner-socials">
+                    <a href="{{ config.support_server_url }}" target="_blank" class="social-link"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <p>&copy; {{ config.project_name }} - {{ 2023|int + 1 }}</p>
+                <p class="footer-tagline">The ultimate Discord companion</p>
+            </div>
+            <div class="footer-links">
+                <a href="{{ config.support_server_url }}" target="_blank">Support</a>
+                <a href="{{ config.bot_invite_url }}" target="_blank">Invite</a>
+            </div>
+            <div class="social-links">
+                <a href="{{ config.support_server_url }}" target="_blank" class="social-icon"><i class="fab fa-discord"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Made with <i class="fas fa-heart"></i> by Discord Bot Creators</p>
+        </div>
+    </footer>
+
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Remove loading class
+            if (document.body && document.body.classList && document.body.classList.contains('loading')) {
+                document.body.classList.remove('loading');
+                document.body.classList.add('loaded');
+            }
+
+            // Header scroll behavior with error checking
+            let lastScrollY = window.scrollY;
+            let ticking = false;
+
+            function updateHeader() {
+                const header = document.querySelector('header');
+                const body = document.body;
+
+                if (header && body) {
+                    if (window.scrollY > lastScrollY && window.scrollY > 100) {
+                        // Scrolling down
+                        header.classList.add('hidden');
+                        body.classList.add('header-hidden');
+                    } else {
+                        // Scrolling up
+                        header.classList.remove('hidden');
+                        body.classList.remove('header-hidden');
+                    }
+                }
+
+                lastScrollY = window.scrollY;
+                ticking = false;
+            }
+
+            function requestTick() {
+                if (!ticking) {
+                    requestAnimationFrame(updateHeader);
+                    ticking = true;
+                }
+            }
+
+            window.addEventListener('scroll', requestTick);
+
+            // Contact form AJAX submission
+            const contactForm = document.getElementById('contactForm');
+            const formSuccess = document.getElementById('formSuccess');
+            const formError = document.getElementById('formError');
+
+            if (contactForm && formSuccess && formError) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // Show loading state
+                    const submitBtn = contactForm.querySelector('.contact-submit-btn');
+                    if (submitBtn) {
+                        const originalBtnText = submitBtn.textContent;
+                        submitBtn.textContent = 'Sending...';
+                        submitBtn.disabled = true;
+
+                        // Get form data
+                        const formData = new FormData(contactForm);
+
+                        // Send data to server via AJAX
+                        fetch('/submit-contact', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data && data.success) {
+                                // Show success message
+                                contactForm.style.display = 'none';
+                                formSuccess.style.display = 'flex';
+
+                                // Reset form after submission
+                                setTimeout(() => {
+                                    contactForm.reset();
+                                    contactForm.style.display = 'block';
+                                    formSuccess.style.display = 'none';
+                                    submitBtn.textContent = originalBtnText;
+                                    submitBtn.disabled = false;
+                                }, 3000);
+                            } else {
+                                // Show error
+                                formError.style.display = 'flex';
+                                submitBtn.textContent = originalBtnText;
+                                submitBtn.disabled = false;
+
+                                setTimeout(() => {
+                                    formError.style.display = 'none';
+                                }, 3000);
+                            }
+                        })
+                        .catch(error => {
+                            // Show error
+                            console.error('Error:', error);
+                            formError.style.display = 'flex';
+                            submitBtn.textContent = originalBtnText;
+                            submitBtn.disabled = false;
+
+                            setTimeout(() => {
+                                formError.style.display = 'none';
+                            }, 3000);
+                        });
+                    }
+                });
+            }
+
+            // Handle command category toggles
+            const categoryHeaders = document.querySelectorAll('.category-header');
+
+            categoryHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    const categoryCommands = this.nextElementSibling;
+                    const toggleIcon = this.querySelector('.toggle-icon');
+
+                    if (categoryCommands && toggleIcon) {
+                        // Close all other open categories first
+                        if (!categoryCommands.style.maxHeight) {
+                            document.querySelectorAll('.category-commands').forEach(commands => {
+                                if (commands !== categoryCommands && commands.style.maxHeight) {
+                                    commands.style.maxHeight = null;
+                                    const otherToggle = commands.previousElementSibling.querySelector('.toggle-icon');
+                                    if (otherToggle) {
+                                        otherToggle.textContent = '+';
+                                    }
+                                }
+                            });
+                        }
+
+                        // Toggle current category
+                        if (categoryCommands.style.maxHeight) {
+                            categoryCommands.style.maxHeight = null;
+                            toggleIcon.textContent = '+';
+                        } else {
+                            categoryCommands.style.maxHeight = categoryCommands.scrollHeight + 'px';
+                            toggleIcon.textContent = '-';
+                        }
+                    }
+                });
+            });
+
+            // Add smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 70,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
